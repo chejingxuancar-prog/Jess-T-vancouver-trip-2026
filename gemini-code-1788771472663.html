@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacific Northwest Master Itinerary | Sep 16 - Sep 28, 2026</title>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #212529;
+            --text-muted: #6c757d;
+            --accent-blue: #005f73;
+            --accent-teal: #0a9396;
+            --accent-orange: #ca6702;
+            --accent-red: #bb3e03;
+            --border-color: #e9ecef;
+            --shadow: 0 4px 12px rgba(0,0,0,0.05);
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #121212;
+                --card-bg: #1e1e1e;
+                --text-main: #e0e0e0;
+                --text-muted: #a0a0a0;
+                --accent-blue: #4ea8de;
+                --accent-teal: #56e39f;
+                --accent-orange: #f4a261;
+                --accent-red: #e76f51;
+                --border-color: #2c2c2c;
+                --shadow: 0 4px 12px rgba(0,0,0,0.3);
+            }
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 12px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        h1, h2, h3 { margin-bottom: 12px; font-weight: 700; color: var(--accent-blue); }
+        h1 { font-size: 1.4rem; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+        h2 { font-size: 1.2rem; border-bottom: 2px solid var(--accent-teal); padding-bottom: 4px; margin-top: 8px; }
+        h3 { font-size: 1.0rem; color: var(--text-main); }
+
+        /* Focus Card & Countdown */
+        .focus-card {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-teal));
+            color: #ffffff;
+            text-align: center;
+            border: none;
+        }
+        .focus-card h2 { color: #ffffff; border-bottom: 1px solid rgba(255,255,255,0.3); }
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .time-block {
+            background: rgba(0,0,0,0.2);
+            padding: 8px 12px;
+            border-radius: 8px;
+            min-width: 60px;
+        }
+        .time-block .num { font-size: 1.4rem; font-weight: bold; }
+        .time-block .label { font-size: 0.7rem; text-transform: uppercase; }
+
+        /* Embedded Map Responsive Container */
+        .map-container {
+            position: relative;
+            padding-bottom: 60%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .map-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Confirmed Bookings Grid */
+        .booking-item {
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        .booking-item:last-child { border-bottom: none; }
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #fff;
+            margin-right: 6px;
+        }
+        .tag-flight { background-color: var(--accent-blue); }
+        .tag-hotel { background-color: var(--accent-teal); }
+        .tag-car { background-color: var(--accent-orange); }
+        .tag-ferry { background-color: var(--accent-red); }
+
+        /* Timeline Layout */
+        .timeline-day { margin-bottom: 20px; }
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--border-color);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+        .day-title { font-weight: bold; }
+        .nav-btn {
+            background: var(--accent-teal);
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .timeline-item {
+            display: flex;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .timeline-time {
+            width: 75px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--accent-orange);
+            flex-shrink: 0;
+        }
+        .timeline-content {
+            flex-grow: 1;
+            padding-left: 10px;
+            border-left: 2px solid var(--border-color);
+        }
+        .location-link {
+            color: var(--accent-blue);
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .alert-badge {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        /* Static Checklist */
+        .static-list { list-style-type: none; }
+        .static-list li {
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .static-list li::before {
+            content: "•";
+            color: var(--accent-orange);
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        /* Tips */
+        .tip-box {
+            background: rgba(10, 147, 150, 0.1);
+            border-left: 4px solid var(--accent-teal);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Pacific Northwest Master Itinerary</h1>
+
+    <!-- 1. Right Now Focus Card -->
+    <div class="card focus-card">
+        <h2>NEXT UPCOMING EVENT</h2>
+        <p id="next-event-title" style="font-weight: bold; margin-top: 6px;">Flight Departure: Air Canada AC105 (YYZ -> YVR)</p>
+        <p id="next-event-time" style="font-size: 0.85rem; opacity: 0.9;">Wed, Sep 16, 2026 @ 11:00 AM EDT</p>
+        
+        <div class="countdown-timer">
+            <div class="time-block"><div class="num" id="cd-days">00</div><div class="label">Days</div></div>
+            <div class="time-block"><div class="num" id="cd-hours">00</div><div class="label">Hours</div></div>
+            <div class="time-block"><div class="num" id="cd-mins">00</div><div class="label">Mins</div></div>
+            <div class="time-block"><div class="num" id="cd-secs">00</div><div class="label">Secs</div></div>
+        </div>
+    </div>
+
+    <!-- 2. Embedded Google Map Overview -->
+    <div class="card">
+        <h2>OVERVIEW ROUTE MAP</h2>
+        <div class="map-container">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m46!1m12!1m3!1d2672897.694383547!2d-126.995332766728!3d49.13884619480579!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m31!3e6!4m5!1s0x548673f143a94fb3%3A0xbb9196ea9b81f38b!2sVancouver%2C%20British%20Columbia%2C%20Canada!3m2!1d49.2827291!2d-123.12073749999999!4m5!1s0x548973b97150e2bb%3A0xdb5f97b887c7db84!2sUcluelet%2C%20British%20Columbia%2C%20Canada!3m2!1d48.9415997!2d-125.5463446!4m5!1s0x548861ef8794371b%3A0x8311b3808de28cbc!2sQualicum%20Bay%2C%20British%20Columbia%20V9K%201Z5%2C%20Canada!3m2!1d49.396248!2d-124.610053!4m5!1s0x5488a77c3af72be7%3A0xf5789563bd8bfc81!2sGabriola%20Island%2C%20Gabriola%2C%20BC%2C%20Canada!3m2!1d49.1577754!2d-123.7893349!4m5!1s0x548673f143a94fb3%3A0xbb9196ea9b81f38b!2sVancouver%2C%20British%20Columbia%2C%20Canada!3m2!1d49.2827291!2d-123.12073749999999!5e0!3m2!1sen!2shk!4v1788768689281!5m2!1sen!2shk" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="strict-origin-when-cross-origin">
+            </iframe>
+        </div>
+        <div style="margin-top: 10px; text-align: center;">
+            <a class="nav-btn" style="display: inline-block; padding: 6px 12px;" 
+               href="https://www.google.com/maps/dir/Vancouver,+BC/Ucluelet,+BC/Qualicum+Bay,+BC/Gabriola+Island,+BC/Vancouver,+BC" 
+               target="_blank">
+               🗺️ Open Full Route Loop in Google Maps App
+            </a>
+        </div>
+    </div>
+
+    <!-- 3. Confirmed Logistics -->
+    <div class="card">
+        <h2>CONFIRMED LOGISTICS</h2>
+        
+        <div class="booking-item">
+            <span class="tag tag-flight">FLIGHT</span> <strong>Outbound: AC105</strong>
+            <div>Sep 16, 2026 | 11:00 AM YYZ ➔ 1:00 PM YVR</div>
+            <div><small>Terminal 1 (YYZ) to Terminal M (YVR)</small></div>
+        </div>
+
+        <div class="booking-item">
+            <span class="tag tag-flight">FLIGHT</span> <strong>Return: AC122</strong>
+            <div>Sep 28, 2026 | 3:25 PM YVR ➔ 11:00 PM YYZ</div>
+            <div><small>Terminal M (YVR) to Terminal 1 (YYZ)</small></div>
+        </div>
+
+        <div class="booking-item">
+            <span class="tag tag-hotel">STAY 1</span> <strong>VAN NEST Airbnb</strong>
+            <div>Sep 16 - Sep 20 (4 Nights) | Check-in: 3:00 PM</div>
+            <div class="location-link" onclick="openNav('6793 Churchill St, Vancouver, BC')">6793 Churchill St, Vancouver, BC</div>
+        </div>
+
+        <div class="booking-item">
+            <span class="tag tag-hotel">STAY 2</span> <strong>Pacific Rim Motel</strong>
+            <div>Sep 20 - Sep 22 (2 Nights) | Check-in: 2:00 PM</div>
+            <div class="location-link" onclick="openNav('1755 Peninsula Rd, Ucluelet, BC')">1755 Peninsula Rd, Ucluelet, BC</div>
+        </div>
+
+        <div class="booking-item">
+            <span class="tag tag-hotel">STAY 3</span> <strong>Qualicum Bay Resort</strong>
+            <div>Sep 22 - Sep 24 (2 Nights) | Check-in: 3:00 PM</div>
+            <div class="location-link" onclick="openNav('5970 W Island Hwy, Qualicum Beach, BC')">5970 W Island Hwy, Qualicum Beach, BC</div>
+        </div>
+
+        <div class="booking-item">
+            <span class="tag tag-hotel">STAY 4</span> <strong>Gabriola Island Airbnb</strong>
+            <div>Sep 24 - Sep 25 (1 Night)</div>
+            <div>Gabriola Island, BC</div>
+        </div>
+
+        <div class="booking-item">
+            <span class="tag tag-car">CAR RENTAL</span> <strong>Nanaimo Rental Car</strong>
+            <div>Sep 20 - Sep 25 (5 Days)</div>
+            <div>Pickup / Dropoff: Nanaimo Downtown / Airport</div>
+        </div>
+    </div>
+
+    <!-- 4. Day-by-Day Itinerary -->
+    <div class="card">
+        <h2>DAY-BY-DAY ITINERARY</h2>
+
+        <!-- Day 1 -->
+        <div class="timeline-day">
+            <div class="day-header">
+                <span class="day-title">Day 1: Wed, Sep 16 - Vancouver Arrival</span>
+                <a class="nav-btn" href="https://www.google.com/maps/dir/YVR+Airport/6793+Churchill+St,+Vancouver/Gastown,+Vancouver" target="_blank">Full Day Route</a>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">13:00 PDT</div>
+                <div class="timeline-content">Land at <span class="location-link" onclick="openNav('YVR Airport')">Vancouver YVR Airport</span>. Take Canada Line SkyTrain to Langara-49th Ave Station, then transfer to Bus #49.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">15:00 PDT</div>
+                <div class="timeline-content">Check-in at <span class="location-link" onclick="openNav('6793 Churchill St, Vancouver')">VAN NEST Airbnb</span>.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">16:30 PDT</div>
+                <div class="timeline-content">Take Bus #10 north to explore historic <span class="location-link" onclick="openNav('Gastown, Vancouver')">Gastown</span> & Waterfront.</div>
+            </div>
+        </div>
+
+        <!-- Day 2 -->
+        <div class="timeline-day">
+            <div class="day-header">
+                <span class="day-title">Day 2: Thu, Sep 17 - Parks & Flyover</span>
+                <a class="nav-btn" href="https://www.google.com/maps/dir/Stanley+Park/FlyOver+Canada" target="_blank">Full Day Route</a>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">09:30 PDT</div>
+                <div class="timeline-content">Explore <span class="location-link" onclick="openNav('Stanley Park, Vancouver')">Stanley Park</span> totem poles and seawall.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">14:00 PDT</div>
+                <div class="timeline-content">Visit <span class="location-link" onclick="openNav('FlyOver Canada, Vancouver')">FlyOver Canada</span> at Canada Place. <span class="alert-badge">Book Tickets Online</span></div>
+            </div>
+        </div>
+
+        <!-- Day 3 -->
+        <div class="timeline-day">
+            <div class="day-header">
+                <span class="day-title">Day 3: Fri, Sep 18 - Island & Campus</span>
+                <a class="nav-btn" href="https://www.google.com/maps/dir/Granville+Island/UBC+Vancouver" target="_blank">Full Day Route</a>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">10:00 PDT</div>
+                <div class="timeline-content">Take Aquabus to <span class="location-link" onclick="openNav('Granville Island Public Market')">Granville Island</span>.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">14:30 PDT</div>
+                <div class="timeline-content">Transit to <span class="location-link" onclick="openNav('University of British Columbia')">UBC Campus</span> area.</div>
+            </div>
+        </div>
+
+        <!-- Day 4 -->
+        <div class="timeline-day">
+            <div class="day-header">
+                <span class="day-title">Day 4: Sat, Sep 19 - Cultural Exploration</span>
+                <a class="nav-btn" href="https://www.google.com/maps/dir/Dr.+Sun+Yat-Sen+Classical+Chinese+Garden/Chinatown,+Vancouver" target="_blank">Full Day Route</a>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">10:00 PDT</div>
+                <div class="timeline-content">Visit <span class="location-link" onclick="openNav('Dr. Sun Yat-Sen Classical Chinese Garden')">Dr. Sun Yat-Sen Garden</span> & Chinatown.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">14:00 PDT</div>
+                <div class="timeline-content">Flexible shopping and city walk to rest before tomorrow's island travel.</div>
+            </div>
+        </div>
+
+        <!-- Day 5 -->
+        <div class="timeline-day">
+            <div class="day-header">
+                <span class="day-title">Day 5: Sun, Sep 20 - Crossing to Ucluelet</span>
+                <a class="nav-btn" href="https://www.google.com/maps/dir/Nanaimo/Wild+Pacific+Trail,+Ucluelet" target="_blank">Full Day Route</a>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">08:30 PDT</div>
+                <div class="timeline-content">Board Hullo / BC Ferries as foot passengers to Nanaimo. <span class="alert-badge">Reserve Foot Passenger Ticket</span></div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">11:00 PDT</div>
+                <div class="timeline-content">Pick up rental car in Nanaimo and drive west via BC-4 W (~2.5 hrs).</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">17:30 PDT</div>
+                <div class="timeline-content">Walk <span class="location-link" onclick="openNav('Wild Pacific Trail, Ucluelet')">Wild Pacific Trail</span> (Lighthouse Loop) prior to 19:15 PDT sunset.</div>
+            </div>
+        </div>
+
+        <!-- Day 6 -->
+        <div class="timeline-day">
+            <div class="day-header">
+                <span class="day-title">Day 6: Mon, Sep 21 - Rainforest & Kayak</span>
+                <a class="nav-btn" href="https://www.google.com/maps/dir/Rainforest+Trail/Tacofino,+Tofino" target="_blank">Full Day Route</a>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">09:30 PDT</div>
+                <div class="timeline-content">Hike <span class="location-link" onclick="openNav('Rainforest Trail, BC')">Rainforest Trail Loops A & B</span>.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">13:00 PDT</div>
+                <div class="timeline-content">2.5-Hour Ucluelet Harbour Kayak Tour. <span class="alert-badge">Pre-book Activity</span></div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">18:00 PDT</div>
+                <div class="timeline-content">Dinner at <span class="location-link" onclick="openNav('Tacofino, Tofino')">Tacofino</span> in Tofino.</div>
+            </div>
+        </div>
+
+        <!-- Day 7 -->
+        <div class="timeline-day">
+            <div class="day-header">
+                <span class="day-title">Day 7: Tue, Sep 22 - Coombs & Qualicum</span>
+                <a class="nav-btn" href="https://www.google.com/maps/dir/Goats+on+the+Roof/Little+Qualicum+Cheeseworks/Qualicum+Bay+Resort" target="_blank">Full Day Route</a>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">10:30 PDT</div>
+                <div class="timeline-content">Visit <span class="location-link" onclick="openNav('Old Country Market - Goats on the Roof')">Goats on Roof Market</span> in Coombs.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">13:00 PDT</div>
+                <div class="timeline-content">Tour <span class="location-link" onclick="openNav('Little Qualicum Cheeseworks')">Little Qualicum Cheeseworks</span>.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">15:30 PDT</div>
+                <div class="timeline-content">Check in at <span class="location-link" onclick="openNav('Qualicum Bay Resort')">Qualicum Bay Resort</span>.</div>
+            </div>
+        </div>
+
+        <!-- Day 8 -->
+        <div class="timeline-day">
+            <div class="day-header">
+                <span class="day-title">Day 8: Wed, Sep 23 - Union Bay Oyster Digging</span>
+                <a class="nav-btn" href="https://www.google.com/maps/dir/Qualicum+Bay+Resort/Union+Bay,+BC" target="_blank">Full Day Route</a>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">11:30 PDT</div>
+                <div class="timeline-content">Arrive at <span class="location-link" onclick="openNav('Baynes Sound Recreational Shellfish Reserve')">Union Bay Shellfish Reserve</span> for low tide foraging (~13:00 PDT Low Tide @ 0.9m). <span class="alert-badge">License & Paper Printout Mandatory</span></div>
+            </div>
+        </div>
+
+        <!-- Day 9 -->
+        <div class="timeline-day">
+            <div class="day-header">
+                <span class="day-title">Day 9: Thu, Sep 24 - Gabriola Island</span>
+                <a class="nav-btn" href="https://www.google.com/maps/dir/Nanaimo+Harbour+Ferry+Terminal/Malaspina+Galleries" target="_blank">Full Day Route</a>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">09:00 PDT</div>
+                <div class="timeline-content">Drive to Nanaimo Harbour Terminal and ferry to Gabriola Island.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">10:15 PDT</div>
+                <div class="timeline-content">Explore <span class="location-link" onclick="openNav('Malaspina Galleries, Gabriola Island')">Malaspina Galleries</span> sandstone formations during low tide (10:14 PDT Low Tide @ 1.2m).</div>
+            </div>
+        </div>
+
+        <!-- Day 10 -->
+        <div class="timeline-day">
+            <div class="day-header">
+                <span class="day-title">Day 10: Fri, Sep 25 - Return to Mainland</span>
+                <a class="nav-btn" href="https://www.google.com/maps/dir/Descanso+Bay/Nanaimo/Horseshoe+Bay+Ferry+Terminal" target="_blank">Full Day Route</a>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">09:30 PDT</div>
+                <div class="timeline-content">Ferry back to Nanaimo Harbour; return rental car.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">11:30 PDT</div>
+                <div class="timeline-content">Board ferry back to Vancouver Mainland as foot passenger. <span class="alert-badge">Reserve Friday Sailing</span></div>
+            </div>
+        </div>
+
+        <!-- Day 11 -->
+        <div class="timeline-day">
+            <div class="day-header">
+                <span class="day-title">Day 11: Sat, Sep 26 - North Shore Heights</span>
+                <a class="nav-btn" href="https://www.google.com/maps/dir/Lynn+Canyon+Park/Grouse+Mountain" target="_blank">Full Day Route</a>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">09:00 PDT</div>
+                <div class="timeline-content">SeaBus to Lonsdale Quay, then Bus #228/229 to <span class="location-link" onclick="openNav('Lynn Canyon Park')">Lynn Canyon Suspension Bridge</span>.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">13:30 PDT</div>
+                <div class="timeline-content">Transit to <span class="location-link" onclick="openNav('Grouse Mountain')">Grouse Mountain</span> and ride Skyride Gondola. <span class="alert-badge">Pre-book Gondola Tickets</span></div>
+            </div>
+        </div>
+
+        <!-- Day 12 -->
+        <div class="timeline-day">
+            <div class="day-header">
+                <span class="day-title">Day 12: Sun, Sep 27 - Seawall & Market</span>
+                <a class="nav-btn" href="https://www.google.com/maps/dir/Stanley+Park+Seawall/Granville+Island" target="_blank">Full Day Route</a>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">09:30 PDT</div>
+                <div class="timeline-content">Walk or cycle along <span class="location-link" onclick="openNav('Stanley Park Seawall')">Stanley Park Seawall</span>.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">13:00 PDT</div>
+                <div class="timeline-content">Explore Market stalls at <span class="location-link" onclick="openNav('Granville Island Public Market')">Granville Island</span>.</div>
+            </div>
+        </div>
+
+        <!-- Day 13 -->
+        <div class="timeline-day">
+            <div class="day-header">
+                <span class="day-title">Day 13: Mon, Sep 28 - Final Walk & Flight Home</span>
+                <a class="nav-btn" href="https://www.google.com/maps/dir/Robson+St/YVR+Airport" target="_blank">Full Day Route</a>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">09:30 PDT</div>
+                <div class="timeline-content">Shopping and final stroll along <span class="location-link" onclick="openNav('Robson St, Vancouver')">Robson Street</span>.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">12:00 PDT</div>
+                <div class="timeline-content">Canada Line SkyTrain to YVR Airport. Flight AC122 departs at 15:25 PDT.</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 5. Static Action Checklist -->
+    <div class="card">
+        <h2>ACTION ITEM CHECKLIST</h2>
+        <ul class="static-list">
+            <li>Apply for BC Tidal Waters Sport Fishing Licence online (Must print out on physical paper for Sep 23 foraging).</li>
+            <li>Book Hullo / BC Ferries foot passenger tickets for Sep 20 (Sunday) and Sep 25 (Friday).</li>
+            <li>Pre-book Ucluelet Harbour Kayaking for Sep 21.</li>
+            <li>Pre-book Grouse Mountain Skyride tickets for Sep 26.</li>
+            <li>Check DFO Area 14 Biotoxin / Red Tide closure status on the morning of Sep 23 before digging oysters.</li>
+        </ul>
+    </div>
+
+    <!-- 6. Practical Travel Tips -->
+    <div class="card">
+        <h2>PRACTICAL TIPS & SAFETY</h2>
+        <div class="tip-box">
+            <strong>Transit Payment:</strong> Simply tap contactless credit/debit cards or mobile wallets at all SkyTrain gates and bus readers. Single fares include 90 mins of free transfers.
+        </div>
+        <div class="tip-box">
+            <strong>Shellfish Limit:</strong> Maximum 12 oysters per person daily. Required tools: shucking knife, thick cut-resistant gloves, bucket, and thick-soled boots.
+        </div>
+        <div class="tip-box">
+            <strong>Tide Timing:</strong> Always explore Malaspina Galleries and tide pools within 1.5 hours before or after low tide.
+        </div>
+    </div>
+
+    <script>
+        // Cross-browser & iOS Safari compatible UTC timestamp for Sep 16, 2026 @ 11:00 AM EDT (15:00 UTC)
+        const targetDate = Date.UTC(2026, 8, 16, 15, 0, 0);
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById('cd-days').innerText = String(days).padStart(2, '0');
+                document.getElementById('cd-hours').innerText = String(hours).padStart(2, '0');
+                document.getElementById('cd-mins').innerText = String(minutes).padStart(2, '0');
+                document.getElementById('cd-secs').innerText = String(seconds).padStart(2, '0');
+            } else {
+                document.getElementById('cd-days').innerText = '00';
+                document.getElementById('cd-hours').innerText = '00';
+                document.getElementById('cd-mins').innerText = '00';
+                document.getElementById('cd-secs').innerText = '00';
+                document.getElementById('next-event-title').innerText = "Trip In Progress / Completed!";
+            }
+        }
+
+        function openNav(location) {
+            const encoded = encodeURIComponent(location);
+            window.open(`https://www.google.com/maps/search/?api=1&query=${encoded}`, '_blank');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>
